@@ -11,3 +11,7 @@
 5. The Type "React.FormEvent" seems to be depreciated. More information: "FormEvent doesn't actually exist. You probably meant to use ChangeEvent, InputEvent, SubmitEvent, or just SyntheticEvent instead depending on the event type." Let's use up-to-date types and practices.
 
 6. Starting with React v19.2.10 FormEvent and FormEventHandler are deprecated and should be replaced with SubmitEvent and SubmitEventHandler. The older event types will still work but trigger a deprecation message.
+
+7. Please create stylings for the page. Create mobile-first UI with elements centered horizontally while starting vertically from the top of the page. I would like the background to be dark with animated floating colorful dots effect. The texts should be salmon colored. Notice that we are using Tailwind v4 syntax.
+
+8. I get an error on the AnimatedBackground: A tree hydrated but some attributes of the server rendered HTML didn't match the client properties.
