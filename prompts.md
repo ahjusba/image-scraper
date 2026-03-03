@@ -23,3 +23,5 @@
 11. Please implement the POST handler, which is called from the "app/page.tsx" using the submitted URL. Handle 404 errors gracefully. The backend will then call the scraper (you can use a placeholder for now as we will implement the scraper later).
 
 12. Let's create a new React component called "ImageGrid", which will render the scraped images in a grid. Each cell should be the same width / height and simply adjust the image to fit inside the cell. The image name should be visible in the cell.
+
+13. Please replace the <img> using Next component <Image>

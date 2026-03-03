@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { ScrapedImage } from "@/lib/scraper";
 
 interface ImageGridProps {
@@ -19,11 +20,14 @@ export default function ImageGrid({ images, accentColor }: ImageGridProps) {
             key={i}
             className="bg-zinc-900 rounded-lg overflow-hidden border border-zinc-800 flex flex-col"
           >
-            <div className="w-full aspect-square overflow-hidden">
-              <img
+            <div className="relative w-full aspect-square overflow-hidden">
+              <Image
                 src={img.url}
                 alt={img.filename}
-                className="w-full h-full object-cover"
+                fill
+                className="object-cover"
+                sizes="(max-width: 640px) 50vw, 33vw"
+                unoptimized
               />
             </div>
             <p className="text-zinc-400 text-xs px-2 py-2 truncate shrink-0">
