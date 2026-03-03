@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import AnimatedBackground from "./components/AnimatedBackground";
+import ImageGrid from "./components/ImageGrid";
+import { ScrapedImage } from "@/lib/scraper";
 
 // Fixed accent color
 const ACCENT_COLOR = 'hsl(333, 100%, 65%)';
@@ -10,6 +12,9 @@ const ACCENT_COLOR_LIGHT = 'hsl(333, 100%, 78%)';
 export default function Home() {
   const [url, setUrl] = useState("");
   const [warning, setWarning] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [images, setImages] = useState<ScrapedImage[]>([]);
+  const [error, setError] = useState("");
 
   const isValidUrl = (text: string): boolean => {
     try {
@@ -46,10 +51,33 @@ export default function Home() {
     }
   };
 
-  const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Submission logic will be added later
-    console.log("Submitted URL:", url);
+    if (!url || !isValidUrl(url)) return;
+
+    setIsLoading(true);
+    setError("");
+    setImages([]);
+
+    try {
+      const res = await fetch("/api/scrape", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(data.error ?? "An unexpected error occurred.");
+      } else {
+        setImages(data.images);
+      }
+    } catch {
+      setError("Failed to connect to the server. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -100,16 +128,25 @@ export default function Home() {
             
             <button
               type="submit"
-              className="w-full text-black px-8 py-4 rounded-lg font-bold text-lg transition-all hover:scale-105 active:scale-95"
-              style={{ 
-                backgroundColor: ACCENT_COLOR,
-              }}
-              onMouseEnter={(e) => e.currentTarget.style.backgroundColor = ACCENT_COLOR_LIGHT}
-              onMouseLeave={(e) => e.currentTarget.style.backgroundColor = ACCENT_COLOR}
+              disabled={isLoading || !url || !!warning}
+              className="w-full text-black px-8 py-4 rounded-lg font-bold text-lg transition-all hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+              style={{ backgroundColor: ACCENT_COLOR }}
+              onMouseEnter={(e) => !isLoading && (e.currentTarget.style.backgroundColor = ACCENT_COLOR_LIGHT)}
+              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = ACCENT_COLOR)}
             >
-              Submit
+              {isLoading ? "Scraping..." : "Submit"}
             </button>
           </form>
+
+          {error && (
+            <div className="mt-8 px-4">
+              <p className="text-red-400 bg-red-950 border border-red-800 rounded-lg px-4 py-3 text-sm">
+                ❌ {error}
+              </p>
+            </div>
+          )}
+
+          <ImageGrid images={images} accentColor={ACCENT_COLOR} />
         </div>
       </div>
     </>

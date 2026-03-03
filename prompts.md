@@ -1,4 +1,4 @@
-# Prompts
+# Prompts, LLM: Claude Sonnet 4.6
 
 1. Please make a .MD file called "prompts", which saves all the prompts I use in this project. Keep the prompts in sequence and numbered, but without any explanation. Update the file on every prompt.
 
@@ -15,3 +15,11 @@
 7. Please create stylings for the page. Create mobile-first UI with elements centered horizontally while starting vertically from the top of the page. I would like the background to be dark with animated floating colorful dots effect. The texts should be salmon colored. Notice that we are using Tailwind v4 syntax.
 
 8. I get an error on the AnimatedBackground: A tree hydrated but some attributes of the server rendered HTML didn't match the client properties.
+
+9. Please add the current file to your context and remember to save all prompts (including this one) to the current file.
+
+10. Please suggest an architecture (especially concerning the image scraper) for the following application: The user submits an URL. All of the images inside the submitted URL are scraped. The images will be saved to a mock AWS storage. The images are saved for the local session and they will be visible in the "submit" page.
+
+11. Please implement the POST handler, which is called from the "app/page.tsx" using the submitted URL. Handle 404 errors gracefully. The backend will then call the scraper (you can use a placeholder for now as we will implement the scraper later).
+
+12. Let's create a new React component called "ImageGrid", which will render the scraped images in a grid. Each cell should be the same width / height and simply adjust the image to fit inside the cell. The image name should be visible in the cell.
