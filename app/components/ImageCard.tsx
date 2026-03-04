@@ -9,9 +9,10 @@ type UploadState = "idle" | "loading" | "success" | "error";
 interface ImageCardProps {
   image: ScrapedImage;
   accentColor: string;
+  showButtons?: boolean;
 }
 
-export default function ImageCard({ image, accentColor }: ImageCardProps) {
+export default function ImageCard({ image, accentColor, showButtons = true }: ImageCardProps) {
   const [uploadState, setUploadState] = useState<UploadState>("idle");
 
   const handleDownload = async () => {
@@ -72,6 +73,7 @@ export default function ImageCard({ image, accentColor }: ImageCardProps) {
           unoptimized
         />
       </div>
+      {showButtons && (
       <div className="flex gap-2 px-3 py-3">
         <a
           href={image.url}
@@ -91,6 +93,7 @@ export default function ImageCard({ image, accentColor }: ImageCardProps) {
           {downloadLabel}
         </button>
       </div>
+      )}
     </div>
   );
 }

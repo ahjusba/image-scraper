@@ -39,6 +39,12 @@ The "download" button can be left as a mock call, simply make a console.log("dow
 
 17. Please implement an AWS persistence backend, where the AWS part is a mock-up. The user should be able to click the "download" button, which would then download and upload the chosen Image to the AWS backend.
 
-18. Let's create a new page 'downloads' which shows shows a grid of images stored in the mock bucket. Make a new api/images endpoint which calls the aws.ts.
+18. Let's move the Type ScrapedImage to a new file "types".
 
-19. Let's move the Type ScrapedImage to a new file "types"
+19. Let's replace the current listMockBucket function with "downloadFromS3" function, which will return a list of objects of type ScrapedImage. We use the mockBucket objects to create the list. In order to capture the correct URL, we need to save it when we upload an image.Let's create a new page 'downloads' which shows shows a grid of images stored in the mock bucket. Make a new api/images endpoint which calls the aws.ts.
+
+20. Does the mockBucket become empty on refresh?
+
+21. When I upload an image, I successfully log the line 57. But when I navigate to /downloads, the line 63 returns an empty array.
+
+22. Let's make the rendering of the buttons conditional, with the condition given through props. We use this component on the main page (where the buttons should be visible) and the "downloads" page, where the buttons should NOT be visible.

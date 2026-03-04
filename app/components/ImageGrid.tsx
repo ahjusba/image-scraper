@@ -4,9 +4,10 @@ import ImageCard from "./ImageCard";
 interface ImageGridProps {
   images: ScrapedImage[];
   accentColor: string;
+  showButtons?: boolean;
 }
 
-export default function ImageGrid({ images, accentColor }: ImageGridProps) {
+export default function ImageGrid({ images, accentColor, showButtons = true }: ImageGridProps) {
   if (images.length === 0) return null;
 
   return (
@@ -16,7 +17,7 @@ export default function ImageGrid({ images, accentColor }: ImageGridProps) {
       </h2>
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
         {images.map((img, i) => (
-          <ImageCard key={i} image={img} accentColor={accentColor} />
+          <ImageCard key={i} image={img} accentColor={accentColor} showButtons={showButtons} />
         ))}
       </div>
     </div>

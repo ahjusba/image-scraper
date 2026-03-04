@@ -1,16 +1,36 @@
 // Mock AWS S3 service
 // Replace the internals of `uploadToS3` with real AWS SDK calls when ready.
 
+import { ScrapedImage } from "@/lib/types";
+
 export interface S3UploadResult {
   bucket: string;
   key: string;
   url: string;
+  originalUrl: string;
   size: number;
   uploadedAt: string;
 }
 
+interface BucketEntry {
+  data: Buffer;
+  filename: string;
+  originalUrl: string;
+  contentType: string;
+  uploadedAt: string;
+}
+
 // In-memory store simulating an S3 bucket
-const mockBucket = new Map<string, { data: Buffer; contentType: string; uploadedAt: string }>();
+// Stored on globalThis so the same Map instance is shared across all
+// Next.js route handlers (each route gets its own module evaluation context).
+// this is used to persist uploaded images across requests for testing purposes.
+declare global {
+  // eslint-disable-next-line no-var
+  var mockS3Bucket: Map<string, BucketEntry> | undefined;
+}
+
+const mockBucket: Map<string, BucketEntry> =
+  globalThis.mockS3Bucket ?? (globalThis.mockS3Bucket = new Map());
 
 const MOCK_BUCKET_NAME = "mock-image-scraper-bucket";
 const MOCK_REGION = "eu-north-1";
@@ -21,26 +41,33 @@ const buildMockUrl = (key: string): string =>
 const simulateNetworkDelay = (): Promise<void> =>
   new Promise((resolve) => setTimeout(resolve, 600));
 
-export const uploadToS3 = async ( filename: string, data: Buffer, contentType: string ): 
-Promise<S3UploadResult> => {
+export const uploadToS3 = async (
+  filename: string,
+  data: Buffer,
+  contentType: string,
+  originalUrl: string
+): Promise<S3UploadResult> => {
   await simulateNetworkDelay();
 
   const key = `images/${Date.now()}-${filename}`;
   const uploadedAt = new Date().toISOString();
 
-  mockBucket.set(key, { data, contentType, uploadedAt });
+  mockBucket.set(key, { data, filename, originalUrl, contentType, uploadedAt });
 
   const result: S3UploadResult = {
     bucket: MOCK_BUCKET_NAME,
     key,
     url: buildMockUrl(key),
+    originalUrl,
     size: data.byteLength,
     uploadedAt,
   };
 
-  console.log("[Mock AWS S3] Upload successful:", result);
-
   return result;
 };
 
-export const listMockBucket = (): string[] => Array.from(mockBucket.keys());
+export const downloadFromS3 = (): ScrapedImage[] =>
+  Array.from(mockBucket.values()).map((entry) => ({
+    url: entry.originalUrl,
+    filename: entry.filename,
+  }));

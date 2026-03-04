@@ -44,7 +44,7 @@ export const POST = async (request: NextRequest) => {
 
   // Upload to mock S3
   try {
-    const result = await uploadToS3(filename, buffer, contentType);
+    const result = await uploadToS3(filename, buffer, contentType, url);
     return NextResponse.json({ success: true, result });
   } catch (err) {
     const message = err instanceof Error ? err.message : "Unknown error";
