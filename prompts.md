@@ -25,3 +25,5 @@
 12. Let's create a new React component called "ImageGrid", which will render the scraped images in a grid. Each cell should be the same width / height and simply adjust the image to fit inside the cell. The image name should be visible in the cell.
 
 13. Please replace the <img> using Next component <Image>
+
+14. Remember to save all prompts in prompts.md. Let's now implement the scraper. We should actually fetch the html inside here since we might want to implement a deeper scrape and thus might have to visit other URLs inside the first URLs (based on depth). For now let's only consider the situation where we scrape only one URL. Currently the api/scrape handles the fetching of the HTML, so we have to move it here.

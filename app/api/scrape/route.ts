@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { scrapeImages } from "@/lib/scraper";
+import { scrapeUrl, ScraperError } from "@/lib/scraper";
 
-export async function POST(request: NextRequest) {
+export const POST = async (request: NextRequest) => {
   // Parse request body
   let body: unknown;
   try {
@@ -24,52 +24,14 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Invalid URL format." }, { status: 400 });
   }
 
-  // Fetch the target page
-  let response: Response;
+  // Scrape images
   try {
-    response = await fetch(parsedUrl.toString(), {
-      headers: {
-        "User-Agent": "Mozilla/5.0 (compatible; ImageScraper/1.0)",
-        "Accept": "text/html,application/xhtml+xml",
-      },
-      signal: AbortSignal.timeout(15_000),
-    });
+    const images = await scrapeUrl(parsedUrl.toString());
+    return NextResponse.json({ images });
   } catch (err) {
-    const message = err instanceof Error ? err.message : "Unknown network error";
-    return NextResponse.json(
-      { error: `Could not reach the provided URL: ${message}` },
-      { status: 502 }
-    );
+    if (err instanceof ScraperError) {
+      return NextResponse.json({ error: err.message }, { status: err.status });
+    }
+    return NextResponse.json({ error: "An unexpected error occurred." }, { status: 500 });
   }
-
-  // Handle HTTP error responses
-  if (response.status === 404) {
-    return NextResponse.json(
-      { error: "The provided URL returned 404 Not Found. Please check the URL and try again." },
-      { status: 404 }
-    );
-  }
-
-  if (!response.ok) {
-    return NextResponse.json(
-      { error: `The provided URL returned an error: ${response.status} ${response.statusText}.` },
-      { status: 502 }
-    );
-  }
-
-  // Read page HTML
-  let html: string;
-  try {
-    html = await response.text();
-  } catch {
-    return NextResponse.json(
-      { error: "Failed to read the page content." },
-      { status: 502 }
-    );
-  }
-
-  // Scrape images (placeholder — real implementation in lib/scraper.ts)
-  const images = scrapeImages(html, parsedUrl.toString());
-
-  return NextResponse.json({ images });
 }
