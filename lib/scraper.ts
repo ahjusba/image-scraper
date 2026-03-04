@@ -1,3 +1,5 @@
+import * as cheerio from "cheerio";
+
 export interface ScrapedImage {
   url: string;
   filename: string;
@@ -40,26 +42,39 @@ const fetchHtml = async (url: string): Promise<string> => {
   }
 
   try {
-    const html = await response.text();
-    console.log(html);
-    return html;
+    return await response.text();
   } catch {
     throw new ScraperError("Failed to read the page content.", 502);
   }
 }
 
-export const scrapeImages = (html: string, baseUrl: string): ScrapedImage[] =>  {
-  // Suppress unused-variable warnings until real implementation
-  void html;
-  void baseUrl;
+export const scrapeImages = (html: string, baseUrl: string): ScrapedImage[] => {
+  const $ = cheerio.load(html);
+  const seen = new Set<string>();
+  const images: ScrapedImage[] = [];
 
-  // Placeholder: returns mock images so the full request pipeline can be tested
-  return [
-    { url: "https://picsum.photos/seed/alpha/400/300", filename: "image-1.jpg" },
-    { url: "https://picsum.photos/seed/beta/400/300", filename: "image-2.jpg" },
-    { url: "https://picsum.photos/seed/gamma/400/300", filename: "image-3.jpg" },
-  ];
-}
+  $("img").each((_, el) => {
+    const rawSrc = $(el).attr("src");
+    if (!rawSrc || rawSrc.startsWith("data:")) return;
+
+    let resolvedUrl: string;
+    try {
+      resolvedUrl = new URL(rawSrc, baseUrl).toString();
+    } catch {
+      return;
+    }
+
+    if (seen.has(resolvedUrl)) return;
+    seen.add(resolvedUrl);
+
+    const pathname = new URL(resolvedUrl).pathname;
+    const filename = pathname.split("/").filter(Boolean).pop() ?? "image";
+
+    images.push({ url: resolvedUrl, filename });
+  });
+
+  return images;
+};
 
 // have depth as placeholder for now, in case we want to implement recursive scraping in the future
 export const scrapeUrl = async ( url: string): Promise<ScrapedImage[]> => {
