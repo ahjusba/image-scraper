@@ -48,3 +48,9 @@ The "download" button can be left as a mock call, simply make a console.log("dow
 21. When I upload an image, I successfully log the line 57. But when I navigate to /downloads, the line 63 returns an empty array.
 
 22. Let's make the rendering of the buttons conditional, with the condition given through props. We use this component on the main page (where the buttons should be visible) and the "downloads" page, where the buttons should NOT be visible.
+
+23. Could you extend this error log to include more details.
+
+24. Please extend the error message here to inform the user if the problem is due to locally issued certificates.
+
+## MVP ready

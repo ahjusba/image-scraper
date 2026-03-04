@@ -19,7 +19,7 @@ const fetchHtml = async (url: string): Promise<string> => {
       signal: AbortSignal.timeout(15_000),
     });
   } catch (err) {
-    const message = err instanceof Error ? err.message : "Unknown network error";
+    const message = err instanceof Error ? err.cause : "Unknown network error";
     throw new ScraperError(`Could not reach the provided URL: ${message}`, 502);
   }
 
