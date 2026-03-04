@@ -36,3 +36,5 @@ Name of the image on the top of the image
 Two buttons "visit" and "download"
 The "visit" button will re-direct the user to the actual URL
 The "download" button can be left as a mock call, simply make a console.log("download")
+
+17. Please implement an AWS persistence backend, where the AWS part is a mock-up. The user should be able to click the "download" button, which would then download and upload the chosen Image to the AWS backend.
