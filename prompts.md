@@ -29,3 +29,10 @@
 14. Remember to save all prompts in prompts.md. Let's now implement the scraper. We should actually fetch the html inside here since we might want to implement a deeper scrape and thus might have to visit other URLs inside the first URLs (based on depth). For now let's only consider the situation where we scrape only one URL. Currently the api/scrape handles the fetching of the HTML, so we have to move it here.
 
 15. Please implement the actual scraping logic. It should return an array of type ScrapedImage (with data on src and filename) within a html input. Please use Lambdas instead of default JavaScript functions from now on.
+
+16. Let's make each Image a separate React component. Each image should have the following data:
+Actual image (object-cover)
+Name of the image on the top of the image
+Two buttons "visit" and "download"
+The "visit" button will re-direct the user to the actual URL
+The "download" button can be left as a mock call, simply make a console.log("download")
