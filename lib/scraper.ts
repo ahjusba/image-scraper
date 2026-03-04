@@ -1,9 +1,5 @@
 import * as cheerio from "cheerio";
-
-export interface ScrapedImage {
-  url: string;
-  filename: string;
-}
+import { ScrapedImage } from "@/lib/types";
 
 export class ScraperError extends Error {
   constructor(message: string, public readonly status: number) {
@@ -48,7 +44,7 @@ const fetchHtml = async (url: string): Promise<string> => {
   }
 }
 
-export const scrapeImages = (html: string, baseUrl: string): ScrapedImage[] => {
+const scrapeImages = (html: string, baseUrl: string): ScrapedImage[] => {
   const $ = cheerio.load(html);
   const seen = new Set<string>();
   const images: ScrapedImage[] = [];
@@ -76,7 +72,6 @@ export const scrapeImages = (html: string, baseUrl: string): ScrapedImage[] => {
   return images;
 };
 
-// have depth as placeholder for now, in case we want to implement recursive scraping in the future
 export const scrapeUrl = async ( url: string): Promise<ScrapedImage[]> => {
   const html = await fetchHtml(url);
   return scrapeImages(html, url);

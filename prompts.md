@@ -38,3 +38,7 @@ The "visit" button will re-direct the user to the actual URL
 The "download" button can be left as a mock call, simply make a console.log("download")
 
 17. Please implement an AWS persistence backend, where the AWS part is a mock-up. The user should be able to click the "download" button, which would then download and upload the chosen Image to the AWS backend.
+
+18. Let's create a new page 'downloads' which shows shows a grid of images stored in the mock bucket. Make a new api/images endpoint which calls the aws.ts.
+
+19. Let's move the Type ScrapedImage to a new file "types"

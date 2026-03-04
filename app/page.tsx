@@ -3,7 +3,7 @@
 import { useState } from "react";
 import AnimatedBackground from "./components/AnimatedBackground";
 import ImageGrid from "./components/ImageGrid";
-import { ScrapedImage } from "@/lib/scraper";
+import { ScrapedImage } from "@/lib/types";
 
 // Fixed accent color
 const ACCENT_COLOR = 'hsl(333, 100%, 65%)';

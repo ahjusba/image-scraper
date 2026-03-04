@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { ScrapedImage } from "@/lib/scraper";
+import { ScrapedImage } from "@/lib/types";
 
 type UploadState = "idle" | "loading" | "success" | "error";
 

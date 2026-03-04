@@ -1,4 +1,4 @@
-import { ScrapedImage } from "@/lib/scraper";
+import { ScrapedImage } from "@/lib/types";
 import ImageCard from "./ImageCard";
 
 interface ImageGridProps {
