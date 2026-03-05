@@ -64,3 +64,5 @@ The "download" button can be left as a mock call, simply make a console.log("dow
 28. The component AnimatedBackground is used across all pages, so perhaps we could address that by using it in a shared place.
 
 29. Please go over the backend (/api) and propose changes to remove redundant code / simplify while still retaining the same functionality. Make the changes inside the editor and I will accept them as I see fit. Remember to capture this prompt in prompts.md
+
+30. Please rewrite the README.md to provide code and instructions on how to run the application

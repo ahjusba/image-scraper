@@ -2,6 +2,16 @@
 
 A Next.js web application that scrapes all images from a given URL and lets you save them to a mock AWS S3 bucket.
 
+# Author notes
+
+1. Most importantly: the project is deployed to Vercel using a mock data persistance. **This means, that once the session becomes "cold", any data "downloaded" will disappear without errors or warnings.** This is working as intended, since this project should mainly be run in local environment.
+
+2. The prompts used to build this project are tracked in [prompts.md](./prompts.md). I did manual enhancements on the fly and trimmed the overly verbose code that Claude Sonnet 4.6 tends to generate, while trying to maintain a logical commit history throughout.
+
+3. I could've given one massive prompt and hoped for the best, but I find that working in small increments is the most effective way to use agentic AI in coding. My approach was to treat it the same way I would a fully manual project, but replacing the act of writing code by hand with AI assistance.
+
+4. A few known limitations worth mentioning: the submitted URL and scraped image grid are not retained when navigating to the downloads page and back. Furthermore, the user can't really delete any of the "downloaded" images. TypeScript is also used somewhat loosely here, but since the user doesn't submit any sensitive forms, I didn't feel strict runtime type validation was necessary. Finally, the AWS integration is a mock-up rather than a real or stubbed-out SDK call.
+
 ## Features
 
 - Paste or type any URL and scrape all `<img>` elements from the page
