@@ -1,6 +1,5 @@
 # Prompts, LLM: Claude Sonnet 4.6
 
-# MVP PHASE
 1. Please make a .MD file called "prompts", which saves all the prompts I use in this project. Keep the prompts in sequence and numbered, but without any explanation. Update the file on every prompt.
 
 2. Initialize a Next.js project using App Router, Tailwind and Typescript.
@@ -63,3 +62,5 @@ The "download" button can be left as a mock call, simply make a console.log("dow
 27. Please go over the frontend and propose changes to remove redundant code / simplify while still retaining the same functionality. Make the changes inside the editor and I will accept them as I see fit.
 
 28. The component AnimatedBackground is used across all pages, so perhaps we could address that by using it in a shared place.
+
+29. Please go over the backend (/api) and propose changes to remove redundant code / simplify while still retaining the same functionality. Make the changes inside the editor and I will accept them as I see fit. Remember to capture this prompt in prompts.md

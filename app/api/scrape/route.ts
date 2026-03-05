@@ -17,16 +17,15 @@ export const POST = async (request: NextRequest) => {
   }
 
   // Validate URL format
-  let parsedUrl: URL;
   try {
-    parsedUrl = new URL(url);
+    new URL(url);
   } catch {
     return NextResponse.json({ error: "Invalid URL format." }, { status: 400 });
   }
 
   // Scrape images
   try {
-    const images = await scrapeUrl(parsedUrl.toString());
+    const images = await scrapeUrl(url);
     return NextResponse.json({ images });
   } catch (err) {
     if (err instanceof ScraperError) {

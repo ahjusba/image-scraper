@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { uploadToS3 } from "@/lib/aws";
 
+const errMsg = (err: unknown): string =>
+  err instanceof Error ? err.message : "Unknown error";
+
 export const POST = async (request: NextRequest) => {
   let body: unknown;
   try {
@@ -27,8 +30,7 @@ export const POST = async (request: NextRequest) => {
       signal: AbortSignal.timeout(15_000),
     });
   } catch (err) {
-    const message = err instanceof Error ? err.message : "Unknown error";
-    return NextResponse.json({ error: `Failed to fetch image: ${message}` }, { status: 502 });
+    return NextResponse.json({ error: `Failed to fetch image: ${errMsg(err)}` }, { status: 502 });
   }
 
   if (!imageResponse.ok) {
@@ -47,7 +49,6 @@ export const POST = async (request: NextRequest) => {
     const result = await uploadToS3(filename, buffer, contentType, url);
     return NextResponse.json({ success: true, result });
   } catch (err) {
-    const message = err instanceof Error ? err.message : "Unknown error";
-    return NextResponse.json({ error: `Upload failed: ${message}` }, { status: 500 });
+    return NextResponse.json({ error: `Upload failed: ${errMsg(err)}` }, { status: 500 });
   }
 };

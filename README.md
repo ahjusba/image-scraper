@@ -1,36 +1,93 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Image Scraper
 
-## Getting Started
+A Next.js web application that scrapes all images from a given URL and lets you save them to a mock AWS S3 bucket.
 
-First, run the development server:
+## Features
+
+- Paste or type any URL and scrape all `<img>` elements from the page
+- View scraped images in a responsive grid
+- Save individual images to an in-memory mock S3 bucket
+- Browse saved images on the `/downloads` page
+
+## Tech stack
+
+- [Next.js 16](https://nextjs.org) (App Router, TypeScript)
+- [Tailwind CSS v4](https://tailwindcss.com)
+- [Cheerio](https://cheerio.js.org) for HTML parsing
+
+## Requirements
+
+- Node.js 18+
+- npm
+
+## Getting started
+
+**1. Install dependencies**
+
+```bash
+npm install
+```
+
+**2. Start the development server**
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+**3. (Optional) TLS configuration**
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+If your network uses a TLS-intercepting proxy such as **ZScaler**, or if the target site uses a self-signed certificate, Node.js will reject the connection with an `unable to get local issuer certificate` error (when fetching the HTML from an outside URL).
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+To bypass this in development, create a `.env` file in the project root and add:
 
-## Learn More
+```dotenv
+# ONLY USE IN DEVELOPMENT
+NODE_TLS_REJECT_UNAUTHORIZED=0
+```
 
-To learn more about Next.js, take a look at the following resources:
+> ⚠️ Never set this in production — it disables TLS certificate verification entirely.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+**4. Open the app**
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Navigate to [http://localhost:3000](http://localhost:3000).
 
-## Deploy on Vercel
+## Usage
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. Enter or paste a URL into the input field on the home page
+2. Click **Submit** — the app fetches the page and extracts all images
+3. Browse the image grid; click **Visit** to open the original image URL in a new tab
+4. Click **Download** to save an image to the mock S3 bucket
+5. Navigate to [/downloads](http://localhost:3000/downloads) to see all saved images
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+> **Note:** The S3 bucket is held in memory via `globalThis`. Saved images persist across requests within a single server process but are cleared on server restart.
+
+## Project structure
+
+```
+app/
+  page.tsx              # Home page (scraper UI)
+  layout.tsx            # Shared layout with nav and animated background
+  downloads/
+    page.tsx            # Downloads page
+  api/
+    scrape/route.ts     # POST /api/scrape — scrapes images from a URL
+    upload/route.ts     # POST /api/upload — saves an image to mock S3
+    images/route.ts     # GET  /api/images — lists saved images
+  components/
+    AnimatedBackground.tsx
+    ImageCard.tsx
+    ImageGrid.tsx
+lib/
+  scraper.ts            # HTML fetching and image extraction logic
+  aws.ts                # Mock S3 upload/download
+  types.ts              # Shared TypeScript types
+```
+
+## Available scripts
+
+| Command | Description |
+|---|---|
+| `npm run dev` | Start development server |
+| `npm run build` | Build for production |
+| `npm run start` | Start production server |
+| `npm run lint` | Run ESLint |
