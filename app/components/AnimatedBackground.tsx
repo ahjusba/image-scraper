@@ -14,19 +14,19 @@ const generateDots = (count: number) => {
   return shadows.join(", ");
 };
 
+const ANIMATION_DURATIONS = [
+  "44s -27s move infinite ease-in-out alternate",
+  "43s -32s move infinite ease-in-out alternate",
+  "42s -23s move infinite ease-in-out alternate",
+  "41s -19s move infinite ease-in-out alternate",
+];
+
 export default function AnimatedBackground() {
-  const [dots1, setDots1] = useState("");
-  const [dots2, setDots2] = useState("");
-  const [dots3, setDots3] = useState("");
-  const [dots4, setDots4] = useState("");
+  const [dots, setDots] = useState<string[]>([]);
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    //No cascading because empty dependency array, so this runs only once on mount, we turn of the eslint warning for that
-    setDots1(generateDots(40));
-    setDots2(generateDots(40));
-    setDots3(generateDots(40));
-    setDots4(generateDots(40));
+    setDots(ANIMATION_DURATIONS.map(() => generateDots(40)));
     setIsMounted(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -58,49 +58,18 @@ export default function AnimatedBackground() {
       
       <div className="fixed inset-0 -z-10" style={{ background: "#123" }} />
       
-      {isMounted && (
-        <>
-          <div
-            style={{
-              ...dotStyle,
-              textShadow: dots1,
-              animation: "44s -27s move infinite ease-in-out alternate",
-            }}
-          >
-            .
-          </div>
-          
-          <div
-            style={{
-              ...dotStyle,
-              textShadow: dots2,
-              animation: "43s -32s move infinite ease-in-out alternate",
-            }}
-          >
-            .
-          </div>
-          
-          <div
-            style={{
-              ...dotStyle,
-              textShadow: dots3,
-              animation: "42s -23s move infinite ease-in-out alternate",
-            }}
-          >
-            .
-          </div>
-          
-          <div
-            style={{
-              ...dotStyle,
-              textShadow: dots4,
-              animation: "41s -19s move infinite ease-in-out alternate",
-            }}
-          >
-            .
-          </div>
-        </>
-      )}
+      {isMounted && dots.map((shadow, i) => (
+        <div
+          key={i}
+          style={{
+            ...dotStyle,
+            textShadow: shadow,
+            animation: ANIMATION_DURATIONS[i],
+          }}
+        >
+          .
+        </div>
+      ))}
     </>
   );
 }

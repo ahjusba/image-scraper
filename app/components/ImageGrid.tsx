@@ -16,8 +16,8 @@ export default function ImageGrid({ images, accentColor, showButtons = true }: I
         Found {images.length} image{images.length !== 1 ? "s" : ""}
       </h2>
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-        {images.map((img, i) => (
-          <ImageCard key={i} image={img} accentColor={accentColor} showButtons={showButtons} />
+        {images.map((img) => (
+          <ImageCard key={img.url} image={img} accentColor={accentColor} showButtons={showButtons} />
         ))}
       </div>
     </div>

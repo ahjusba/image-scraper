@@ -52,11 +52,7 @@ export default function ImageCard({ image, accentColor, showButtons = true }: Im
           ? "Retry"
           : "Download";
 
-  const downloadBorderColor =
-    uploadState === "error" ? "#f87171" : accentColor;
-
-  const downloadTextColor =
-    uploadState === "error" ? "#f87171" : accentColor;
+  const statusColor = uploadState === "error" ? "#f87171" : accentColor;
 
   return (
     <div className="bg-zinc-900 rounded-lg overflow-hidden border border-zinc-800 flex flex-col">
@@ -88,7 +84,7 @@ export default function ImageCard({ image, accentColor, showButtons = true }: Im
           onClick={handleDownload}
           disabled={uploadState === "loading" || uploadState === "success"}
           className="flex-1 text-xs font-semibold py-1.5 rounded-md border transition-colors hover:bg-zinc-800 disabled:opacity-60 disabled:cursor-not-allowed"
-          style={{ borderColor: downloadBorderColor, color: downloadTextColor }}
+          style={{ borderColor: statusColor, color: statusColor }}
         >
           {downloadLabel}
         </button>

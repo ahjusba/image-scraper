@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import AnimatedBackground from "@/app/components/AnimatedBackground";
 import ImageGrid from "@/app/components/ImageGrid";
 import { ScrapedImage } from "@/lib/types";
 
@@ -34,7 +33,6 @@ export default function DownloadsPage() {
 
   return (
     <>
-      <AnimatedBackground />
       <div className="min-h-screen p-4 sm:p-8">
         <div className="w-full max-w-2xl mx-auto mt-12 sm:mt-20">
           <h1

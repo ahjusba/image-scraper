@@ -1,5 +1,6 @@
 # Prompts, LLM: Claude Sonnet 4.6
 
+# MVP PHASE
 1. Please make a .MD file called "prompts", which saves all the prompts I use in this project. Keep the prompts in sequence and numbered, but without any explanation. Update the file on every prompt.
 
 2. Initialize a Next.js project using App Router, Tailwind and Typescript.
@@ -51,6 +52,14 @@ The "download" button can be left as a mock call, simply make a console.log("dow
 
 23. Could you extend this error log to include more details.
 
-24. Please extend the error message here to inform the user if the problem is due to locally issued certificates.
+24. I get the error "unable to get local issuer certificate". How do I enable Node to accept the locally signed certificate?
 
-## MVP ready
+## CLEANING PHASE
+
+25. Are buckets in AWS S3 always Maps?
+
+26. And the binary blob contains the actual payload as well as the metadata?
+
+27. Please go over the frontend and propose changes to remove redundant code / simplify while still retaining the same functionality. Make the changes inside the editor and I will accept them as I see fit.
+
+28. The component AnimatedBackground is used across all pages, so perhaps we could address that by using it in a shared place.

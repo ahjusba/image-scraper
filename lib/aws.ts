@@ -1,31 +1,11 @@
 // Mock AWS S3 service
-// Replace the internals of `uploadToS3` with real AWS SDK calls when ready.
-
-import { ScrapedImage } from "@/lib/types";
-
-export interface S3UploadResult {
-  bucket: string;
-  key: string;
-  url: string;
-  originalUrl: string;
-  size: number;
-  uploadedAt: string;
-}
-
-interface BucketEntry {
-  data: Buffer;
-  filename: string;
-  originalUrl: string;
-  contentType: string;
-  uploadedAt: string;
-}
+import { ScrapedImage, S3UploadResult, BucketEntry } from "@/lib/types";
 
 // In-memory store simulating an S3 bucket
 // Stored on globalThis so the same Map instance is shared across all
 // Next.js route handlers (each route gets its own module evaluation context).
 // this is used to persist uploaded images across requests for testing purposes.
 declare global {
-  // eslint-disable-next-line no-var
   var mockS3Bucket: Map<string, BucketEntry> | undefined;
 }
 

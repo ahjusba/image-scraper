@@ -1,13 +1,24 @@
 "use client";
 
 import { useState } from "react";
-import AnimatedBackground from "./components/AnimatedBackground";
 import ImageGrid from "./components/ImageGrid";
 import { ScrapedImage } from "@/lib/types";
 
 // Fixed accent color
 const ACCENT_COLOR = 'hsl(333, 100%, 65%)';
 const ACCENT_COLOR_LIGHT = 'hsl(333, 100%, 78%)';
+
+const isValidUrl = (text: string): boolean => {
+  try {
+    new URL(text);
+    return true;
+  } catch {
+    return false;
+  }
+};
+
+const getUrlWarning = (value: string): string =>
+  value && !isValidUrl(value) ? "The text does not appear to be a valid URL." : "";
 
 export default function Home() {
   const [url, setUrl] = useState("");
@@ -16,25 +27,11 @@ export default function Home() {
   const [images, setImages] = useState<ScrapedImage[]>([]);
   const [error, setError] = useState("");
 
-  const isValidUrl = (text: string): boolean => {
-    try {
-      new URL(text);
-      return true;
-    } catch {
-      return false;
-    }
-  };
-
   const handlePaste = async () => {
     try {
       const text = await navigator.clipboard.readText();
       setUrl(text);
-      
-      if (text && !isValidUrl(text)) {
-        setWarning("Warning: The pasted text does not appear to be a valid URL");
-      } else {
-        setWarning("");
-      }
+      setWarning(getUrlWarning(text));
     } catch (error) {
       console.error("Failed to read clipboard:", error);
     }
@@ -43,12 +40,7 @@ export default function Home() {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setUrl(value);
-    
-    if (value && !isValidUrl(value)) {
-      setWarning("Warning: The text does not appear to be a valid URL");
-    } else {
-      setWarning("");
-    }
+    setWarning(getUrlWarning(value));
   };
 
   const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
@@ -82,7 +74,6 @@ export default function Home() {
 
   return (
     <>
-      <AnimatedBackground />
       <div className="min-h-screen p-4 sm:p-8">
         <div className="w-full max-w-2xl mx-auto mt-12 sm:mt-20">
           <h1 
