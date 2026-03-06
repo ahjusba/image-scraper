@@ -12,6 +12,10 @@ A Next.js web application that scrapes all images from a given URL and lets you 
 
 4. A few known limitations worth mentioning: the submitted URL and scraped image grid are not retained when navigating to the downloads page and back. Furthermore, the user can't really delete any of the "downloaded" images. TypeScript is also used somewhat loosely here, but since the user doesn't submit any sensitive forms, I didn't feel strict runtime type validation was necessary. Finally, the AWS integration is a mock-up rather than a real or stubbed-out SDK call.
 
+5. There are zero tests currently. The web has all kinds of different image formats with perhaps weird naming conventions and none of
+this is taken into account. Manual testing does provide reasonable assurance that we have at least a good starting point for an image
+scraper.
+
 ## Features
 
 - Paste or type any URL and scrape all `<img>` elements from the page
